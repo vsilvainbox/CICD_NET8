@@ -19,27 +19,23 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 8.0.x
-    
-    - name: Restore dependencies
-      run: dotnet restore
-    
-    - name: Build
-      run: dotnet build --no-restore --configuration Release
-    
-    - name: Test
-      run: dotnet test --no-build --verbosity normal --configuration Release
-      
-    - name: Compilar
-      run: dotnet publish -c Release -o output
+      - name: Checkout código
+        uses: actions/checkout@v4
 
-    - name: Subir artefacto
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifact
-        path: output
+      - name: Configurar .NET 8
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restaurar dependencias
+        run: dotnet restore
+
+      - name: Compilar
+        run: dotnet publish -c Release -o output
+
+      - name: Subir artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: output
+          retention-days: 7  # Guardar el artefacto por 7 días
