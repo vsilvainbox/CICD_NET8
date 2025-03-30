@@ -19,38 +19,14 @@ jobs:
     runs-on: self-hosted
     
     steps:
-    - name: Download built artifact
-      uses: actions/download-artifact@v4.2.1
+    - name: Descargar artefacto
+      uses: actions/download-artifact@v4
       with:
-        name: webapp
-        path: temp-deploy
-    
-    - name: Display structure of downloaded files
-      run: dir temp-deploy
-      shell: cmd
-    
-    - name: Stop running application (if exists)
+        name: build-artifact
+        path: C:\Temp\Deploy
+
+    - name: Desplegar en D:\CICD
       run: |
-        taskkill /IM "dotnet.exe" /F
-        exit 0
-      shell: cmd
-      continue-on-error: true
-    
-    - name: Backup existing deployment
-      run: |
-        if exist "D:\CICD\backup" rmdir /S /Q "D:\CICD\backup"
-        if exist "D:\CICD\wwwroot" mkdir "D:\CICD\backup" && xcopy "D:\CICD\wwwroot\*" "D:\CICD\backup\" /E /I /Y
-      shell: cmd
-      continue-on-error: true
-    
-    - name: Deploy to target directory
-      run: |
-        if not exist "D:\CICD" mkdir "D:\CICD"
-        if not exist "D:\CICD\wwwroot" mkdir "D:\CICD\wwwroot"
-        xcopy "temp-deploy\*" "D:\CICD\wwwroot\" /E /I /Y
-      shell: cmd
-    
-    - name: Cleanup temp directory
-      run: |
-        rmdir /S /Q temp-deploy
-      shell: cmd
+        Remove-Item -Recurse -Force D:\CICD\* -ErrorAction SilentlyContinue
+        Move-Item -Path C:\Temp\Deploy\* -Destination D:\CICD -Force
+      shell: pwsh
