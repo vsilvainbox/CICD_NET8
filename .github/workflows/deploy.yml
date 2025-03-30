@@ -20,11 +20,9 @@ jobs:
     
     steps:
     - name: Download built artifact
-      uses: dawidd6/action-download-artifact@v2
+      uses: actions/download-artifact@v4.2.1
       with:
-        workflow: Build
         name: webapp
-        workflow_conclusion: success
         path: temp-deploy
     
     - name: Display structure of downloaded files
