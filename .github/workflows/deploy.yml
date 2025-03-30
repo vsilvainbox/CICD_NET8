@@ -17,9 +17,9 @@ jobs:
           path: C:\Temp\Deploy
           allow_forks: true
 
-
       - name: Desplegar en D:\CICD
         run: |
           Remove-Item -Recurse -Force D:\CICD\* -ErrorAction SilentlyContinue
+          Start-Sleep -s 5  # Wait for a few seconds to ensure the delete operation completes
           Move-Item -Path C:\Temp\Deploy\* -Destination D:\CICD -Force
         shell: pwsh
