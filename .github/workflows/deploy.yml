@@ -1,0 +1,56 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ "main", "develop" ]
+    paths-ignore:
+      - '**.md'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [ "main", "develop" ]
+    paths-ignore:
+      - '**.md'
+      - '.github/workflows/**'
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+    
+    steps:
+    - name: Download built artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: webapp
+        path: temp-deploy
+    
+    - name: Display structure of downloaded files
+      run: dir temp-deploy
+      shell: cmd
+    
+    - name: Stop running application (if exists)
+      run: |
+        taskkill /IM "dotnet.exe" /F
+        exit 0
+      shell: cmd
+      continue-on-error: true
+    
+    - name: Backup existing deployment
+      run: |
+        if exist "D:\CICD\backup" rmdir /S /Q "D:\CICD\backup"
+        if exist "D:\CICD\wwwroot" mkdir "D:\CICD\backup" && xcopy "D:\CICD\wwwroot\*" "D:\CICD\backup\" /E /I /Y
+      shell: cmd
+      continue-on-error: true
+    
+    - name: Deploy to target directory
+      run: |
+        if not exist "D:\CICD" mkdir "D:\CICD"
+        if not exist "D:\CICD\wwwroot" mkdir "D:\CICD\wwwroot"
+        xcopy "temp-deploy\*" "D:\CICD\wwwroot\" /E /I /Y
+      shell: cmd
+    
+    - name: Cleanup temp directory
+      run: |
+        rmdir /S /Q temp-deploy
+      shell: cmd
