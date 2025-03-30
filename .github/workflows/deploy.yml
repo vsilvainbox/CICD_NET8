@@ -26,6 +26,8 @@ jobs:
           workflow_conclusion: success  # Solo descarga si el build fue exitoso
           name: build-artifact
           path: C:\Temp\Deploy
+          allow_forks: true
+
 
       - name: Desplegar en D:\CICD
         run: |
