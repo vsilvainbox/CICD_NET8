@@ -19,14 +19,14 @@ jobs:
     runs-on: self-hosted
     
     steps:
-    - name: Descargar artefacto
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifact
-        path: C:\Temp\Deploy
+      - name: Descargar artefacto
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+          path: C:\Temp\Deploy
 
-    - name: Desplegar en D:\CICD
-      run: |
-        Remove-Item -Recurse -Force D:\CICD\* -ErrorAction SilentlyContinue
-        Move-Item -Path C:\Temp\Deploy\* -Destination D:\CICD -Force
-      shell: pwsh
+      - name: Desplegar en D:\CICD
+        run: |
+          Remove-Item -Recurse -Force D:\CICD\* -ErrorAction SilentlyContinue
+          Move-Item -Path C:\Temp\Deploy\* -Destination D:\CICD -Force
+        shell: pwsh
