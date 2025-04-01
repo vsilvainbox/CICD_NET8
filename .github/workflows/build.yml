@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
   push:
-    branches: [ "main", "develop", "features/**", "fix/**", "refactor/**" ]
+    branches: [ "main", "develop", "feature/**", "fix/**", "refactor/**" ]
     paths-ignore:
       - '**.md'
       - '.github/workflows/**'
