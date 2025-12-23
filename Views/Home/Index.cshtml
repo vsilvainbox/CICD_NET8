@@ -4,5 +4,43 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome V12</h1>
+    @if (ViewBag.WelcomeEnabled)
+    {
+        <div class="alert alert-success" role="alert">
+            <h4 class="alert-heading">FM20 Feature Manager Active!</h4>
+            <p>The welcome message feature is enabled via FM20.DLL</p>
+            <hr>
+            <p class="mb-0">FM20 Version: <strong>@ViewBag.FM20Version</strong></p>
+        </div>
+    }
+    
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    
+    <div class="row mt-4">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Enabled Features (FM20)</h5>
+                </div>
+                <div class="card-body">
+                    @if (ViewBag.EnabledFeatures != null && ((List<string>)ViewBag.EnabledFeatures).Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (string feature in ViewBag.EnabledFeatures)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    @feature
+                                    <span class="badge bg-success rounded-pill">Enabled</span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No features currently enabled</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
